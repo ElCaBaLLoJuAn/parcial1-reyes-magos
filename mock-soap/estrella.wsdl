@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="EstrellaDeBelenService"
+             targetNamespace="http://belen.beatlech/estrella"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:eb="http://belen.beatlech/estrella"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <types>
+    <xsd:schema targetNamespace="http://belen.beatlech/estrella" elementFormDefault="qualified">
+      <xsd:element name="ConsultarRutaRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="origen" type="xsd:string"/>
+            <xsd:element name="destino" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ConsultarRutaResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="visibilidad">
+              <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                  <xsd:enumeration value="VISIBLE"/>
+                  <xsd:enumeration value="NUBLADA"/>
+                </xsd:restriction>
+              </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="diasRestantes" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </types>
+  <message name="ConsultarRutaInput"><part name="parameters" element="eb:ConsultarRutaRequest"/></message>
+  <message name="ConsultarRutaOutput"><part name="parameters" element="eb:ConsultarRutaResponse"/></message>
+  <portType name="EstrellaPortType">
+    <operation name="ConsultarRuta">
+      <input message="eb:ConsultarRutaInput"/>
+      <output message="eb:ConsultarRutaOutput"/>
+    </operation>
+  </portType>
+  <binding name="EstrellaBinding" type="eb:EstrellaPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="ConsultarRuta">
+      <soap:operation soapAction="ConsultarRuta"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+  <service name="EstrellaDeBelenService">
+    <port name="EstrellaPort" binding="eb:EstrellaBinding">
+      <soap:address location="http://127.0.0.1:8088/estrella"/>
+    </port>
+  </service>
+</definitions>
